@@ -2,6 +2,7 @@
 /Users/jock/ideaProjects/demo/src/main/java/jock/demo/dao/ProductsMapper.java
 /Users/jock/ideaProjects/demo/src/main/java/jock/demo/service/BusinessException.java
 /Users/jock/ideaProjects/demo/src/main/java/jock/demo/controller/GlobalExceptionHandler.java
+/Users/jock/ideaProjects/demo/src/main/java/jock/demo/service/ValidationException.java
 /Users/jock/ideaProjects/demo/src/main/java/jock/demo/controller/MaillistController.java
 /Users/jock/ideaProjects/demo/src/main/java/jock/demo/controller/ProductController.java
 /Users/jock/ideaProjects/demo/src/main/java/jock/demo/service/ProductsService.java

@@ -3,6 +3,7 @@ package jock.demo;
 import jock.demo.dao.MaillistMapper;
 import jock.demo.service.BusinessException;
 import jock.demo.service.MaillistService;
+import jock.demo.service.ValidationException;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -47,12 +48,12 @@ public class MaillistServiceImplTest {
         maillistService.addMailAddress(email);
     }
 
-    @Test(expected = BusinessException.class)
+    @Test(expected = ValidationException.class)
     public void addNullMail() {
         maillistService.addMailAddress(null);
     }
 
-    @Test(expected = BusinessException.class)
+    @Test(expected = ValidationException.class)
     public void addEmptyMail() {
         maillistService.addMailAddress(" ");
     }

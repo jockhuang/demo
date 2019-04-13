@@ -4,6 +4,7 @@ import jock.demo.dao.ProductsMapper;
 import jock.demo.model.Products;
 import jock.demo.service.BusinessException;
 import jock.demo.service.ProductsService;
+import jock.demo.service.ValidationException;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -96,29 +97,29 @@ public class ProductsServiceTest {
 
     }
 
-    @Test(expected = BusinessException.class)
+    @Test(expected = ValidationException.class)
     public void currentAddNullTest() {
         productsService.addCurrentProducts(null);
     }
 
-    @Test(expected = BusinessException.class)
+    @Test(expected = ValidationException.class)
     public void currentAddEmptyTest() {
         Products products = new Products();
         productsService.addCurrentProducts(products);
     }
 
-    @Test(expected = BusinessException.class)
+    @Test(expected = ValidationException.class)
     public void soonAddNullTest() {
         productsService.addComingSoonProducts(null);
     }
 
-    @Test(expected = BusinessException.class)
+    @Test(expected = ValidationException.class)
     public void soonAddEmptyTest() {
         Products products = new Products();
         productsService.addComingSoonProducts(products);
     }
 
-    @Test(expected = BusinessException.class)
+    @Test(expected = ValidationException.class)
     public void currentRemoveNullTest() {
         productsService.removeCurrentProducts(null);
     }
@@ -128,7 +129,7 @@ public class ProductsServiceTest {
         productsService.removeCurrentProducts(Integer.MAX_VALUE);
     }
 
-    @Test(expected = BusinessException.class)
+    @Test(expected = ValidationException.class)
     public void soonRemoveNullTest() {
         productsService.removeComingSoonProducts(null);
     }
