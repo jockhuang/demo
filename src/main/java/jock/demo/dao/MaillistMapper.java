@@ -27,7 +27,7 @@ public interface MaillistMapper {
             "values (#{id,jdbcType=INTEGER}, #{email,jdbcType=VARCHAR}, ",
             "#{createDate,jdbcType=TIMESTAMP})"
     })
-    @SelectKey(statement = "SELECT LAST_INSERT_ID()", keyProperty = "id", before = true, resultType = Integer.class)
+    @SelectKey(statement = "SELECT LAST_INSERT_ID()", keyProperty = "id", before = false, resultType = Integer.class)
     int insert(Maillist record);
 
     @Select({

@@ -1,9 +1,11 @@
 package jock.demo.service;
 
+import jock.demo.model.Maillist;
+
 public interface MaillistService {
 
-    boolean addMailAddress(String email);
+    public Maillist addMailAddress(String email);
 
-    boolean deleteMailAddress(String email);
+    public void deleteMailAddress(String email);
 
 }

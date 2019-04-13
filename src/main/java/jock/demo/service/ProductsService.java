@@ -8,4 +8,12 @@ public interface ProductsService {
     List<Products> getAllCurrentProducts();
 
     List<Products> getComingSoonProduct();
+
+    Products addCurrentProducts(Products products);
+
+    Products addComingSoonProducts(Products products);
+
+    void removeCurrentProducts(Integer productId);
+
+    void removeComingSoonProducts(Integer productId);
 }

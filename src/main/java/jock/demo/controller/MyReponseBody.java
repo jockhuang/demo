@@ -1,5 +1,12 @@
 package jock.demo.controller;
 
+/**
+ * it is the object of return data object.
+ *
+ * code: response code 0:FAILED  1:SUCCESS
+ * message: response message
+ * data: return business data of the request
+ */
 public class MyReponseBody {
     //the code meaning
     public static final int SUCCESS = 1;

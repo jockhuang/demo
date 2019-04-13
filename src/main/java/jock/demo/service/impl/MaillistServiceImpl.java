@@ -16,7 +16,10 @@ public class MaillistServiceImpl implements MaillistService {
     MaillistMapper maillistMapper;
 
     @Override
-    public boolean addMailAddress(String email) {
+    public Maillist addMailAddress(String email) {
+        if (email == null||"".equals(email.trim())) {
+            throw new BusinessException("Email address cannot be empty!");
+        }
         if (maillistMapper.selectByMail(email) != null) {
             throw new BusinessException("Email address already exists!");
         }
@@ -24,15 +27,18 @@ public class MaillistServiceImpl implements MaillistService {
         maillist.setCreateDate(new Date());
         maillist.setEmail(email);
         maillistMapper.insert(maillist);
-        return true;
+        return maillist;
     }
 
     @Override
-    public boolean deleteMailAddress(String email) {
+    public void deleteMailAddress(String email) {
+        if (email == null||"".equals(email.trim())) {
+            throw new BusinessException("Email address cannot be empty!");
+        }
         if (maillistMapper.selectByMail(email) == null) {
             throw new BusinessException("Email address does not exist!");
         }
-        return maillistMapper.deleteByEmail(email) == 1;
+        maillistMapper.deleteByEmail(email);
     }
 }
 

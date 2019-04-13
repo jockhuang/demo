@@ -22,29 +22,29 @@ public class MaillistController {
 
 
     /**
-     *
      * Add a person to the mailing list
      * <pre>
      * ENDPOINT: http://localhost:8080/mail
      * RequestMethod: POST
      *
-     * <p> {
+     *  {
      * "email":"jock@email.com"
-     * } </p>
+     * }
      * </pre>
-     * @param person
+     *
+     * @param person maillist
      * @return
      */
     @RequestMapping(value = "", method = POST, produces = "application/json")
     public MyReponseBody addPerson(@RequestBody Maillist person) {
-        if(person.getEmail()==null||"".equals(person.getEmail())){
-           return MyReponseBody.failed("Email address cannot be empty!");
+        if (person.getEmail() == null || "".equals(person.getEmail().trim())) {
+            return MyReponseBody.failed("Email address cannot be empty!");
         }
         person.setId(null);
         person.setCreateDate(new Date());
-
-        maillistService.addMailAddress(person.getEmail());
-        return MyReponseBody.ok(person);
+        person.setEmail(person.getEmail().trim());
+        Maillist maillist = maillistService.addMailAddress(person.getEmail());
+        return MyReponseBody.ok(maillist);
     }
 
 
@@ -54,12 +54,13 @@ public class MaillistController {
      * ENDPOINT: http://localhost:8080/mail/{email}
      * RequestMethod: delete
      * </pre>
+     *
      * @param email
      * @return
      */
     @RequestMapping(value = "/{email}", method = DELETE)
     public MyReponseBody removePerson(@PathVariable String email) {
-        if(email==null||"".equals(email)){
+        if (email == null || "".equals(email.trim())) {
             return MyReponseBody.failed("Email address cannot be empty!");
         }
         maillistService.deleteMailAddress(email);

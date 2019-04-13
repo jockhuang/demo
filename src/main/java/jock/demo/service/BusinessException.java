@@ -1,5 +1,9 @@
 package jock.demo.service;
 
+/**
+ * BusinessException
+ *
+ */
 public class BusinessException extends RuntimeException {
     public BusinessException() {
     }
