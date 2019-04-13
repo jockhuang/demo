@@ -4,6 +4,7 @@ import jock.demo.dao.MaillistMapper;
 import jock.demo.model.Maillist;
 import jock.demo.service.BusinessException;
 import jock.demo.service.MaillistService;
+import jock.demo.service.ValidationException;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -17,8 +18,8 @@ public class MaillistServiceImpl implements MaillistService {
 
     @Override
     public Maillist addMailAddress(String email) {
-        if (email == null||"".equals(email.trim())) {
-            throw new BusinessException("Email address cannot be empty!");
+        if (email == null || "".equals(email.trim())) {
+            throw new ValidationException("Email address cannot be empty!");
         }
         if (maillistMapper.selectByMail(email) != null) {
             throw new BusinessException("Email address already exists!");
@@ -32,8 +33,8 @@ public class MaillistServiceImpl implements MaillistService {
 
     @Override
     public void deleteMailAddress(String email) {
-        if (email == null||"".equals(email.trim())) {
-            throw new BusinessException("Email address cannot be empty!");
+        if (email == null || "".equals(email.trim())) {
+            throw new ValidationException("Email address cannot be empty!");
         }
         if (maillistMapper.selectByMail(email) == null) {
             throw new BusinessException("Email address does not exist!");

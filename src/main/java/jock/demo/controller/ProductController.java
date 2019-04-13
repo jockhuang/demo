@@ -3,6 +3,7 @@ package jock.demo.controller;
 import jock.demo.model.Products;
 import jock.demo.service.BusinessException;
 import jock.demo.service.ProductsService;
+import jock.demo.service.ValidationException;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -58,12 +59,13 @@ public class ProductController {
      * ENDPOINT: http://localhost:8080/product/current
      * RequestMethod: POST
      * </pre>
+     *
      * @return the json format data of the released product that just added
      */
     @RequestMapping(value = "/current", method = POST)
     public MyReponseBody addCurrentProduct(@RequestBody Products products) {
         if (products.getName() == null || "".equals(products.getName())) {
-            throw new BusinessException("Product name is empty!");
+            throw new ValidationException("Product name is empty!");
         }
         Products products1 = productsService.addCurrentProducts(products);
 
@@ -76,12 +78,13 @@ public class ProductController {
      * ENDPOINT: http://localhost:8080/product/comingSoon
      * RequestMethod: POST
      * </pre>
+     *
      * @return the json format data of the coming soon product just added
      */
     @RequestMapping(value = "/comingSoon", method = POST)
     public MyReponseBody addComingSoonProduct(@RequestBody Products products) {
         if (products.getName() == null || "".equals(products.getName())) {
-            throw new BusinessException("Product name is empty!");
+            throw new ValidationException("Product name is empty!");
         }
         Products products1 = productsService.addComingSoonProducts(products);
         return MyReponseBody.ok(products1);
@@ -93,6 +96,7 @@ public class ProductController {
      * ENDPOINT: http://localhost:8080/product/current/{productId}
      * RequestMethod: DELETE
      * </pre>
+     *
      * @return the result of delete
      */
     @RequestMapping(value = "/current/{productId}", method = DELETE)
@@ -108,6 +112,7 @@ public class ProductController {
      * ENDPOINT: http://localhost:8080/product/comingSoon/{productId}
      * RequestMethod: DELETE
      * </pre>
+     *
      * @return the result of delete
      */
     @RequestMapping(value = "/comingSoon/{productId}", method = DELETE)

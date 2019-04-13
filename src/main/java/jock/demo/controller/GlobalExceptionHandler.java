@@ -1,6 +1,7 @@
 package jock.demo.controller;
 
 import jock.demo.service.BusinessException;
+import jock.demo.service.ValidationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -22,6 +23,7 @@ public class GlobalExceptionHandler {
 
     /**
      * handler all unknow exceptions
+     *
      * @param e
      * @return
      */
@@ -42,12 +44,25 @@ public class GlobalExceptionHandler {
      * @param e
      * @return
      */
-    @ExceptionHandler({BusinessException.class,MethodArgumentTypeMismatchException.class})
+    @ExceptionHandler(ValidationException.class)
     @ResponseBody
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    MyReponseBody handleBusinessException(Exception e) {
+    @ResponseStatus(HttpStatus.METHOD_NOT_ALLOWED)
+    MyReponseBody handleBusinessException(ValidationException e) {
         logger.error(e.getMessage(), e);
+        return MyReponseBody.failed(e.getMessage());
+    }
 
+    /**
+     * handler all business exception
+     *
+     * @param e
+     * @return
+     */
+    @ExceptionHandler(BusinessException.class)
+    @ResponseBody
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    MyReponseBody handleBusinessException(BusinessException e) {
+        logger.error(e.getMessage(), e);
         return MyReponseBody.failed(e.getMessage());
     }
 
@@ -63,6 +78,21 @@ public class GlobalExceptionHandler {
     MyReponseBody handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
         logger.error(e.getMessage(), e);
         return MyReponseBody.failed("ValidException:" + e.getBindingResult().getAllErrors().get(0).getDefaultMessage());
+
+    }
+
+    /**
+     * handler MethodArgumentTypeMismatchException
+     *
+     * @param e
+     * @return
+     */
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    @ResponseBody
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    MyReponseBody handleMethodArgumentNotValidException(MethodArgumentTypeMismatchException e) {
+        logger.error(e.getMessage(), e);
+        return MyReponseBody.failed("MethodArgumentTypeMismatchException:" + e.getMessage());
 
     }
 

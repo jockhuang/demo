@@ -4,6 +4,7 @@ import jock.demo.dao.ProductsMapper;
 import jock.demo.model.Products;
 import jock.demo.service.BusinessException;
 import jock.demo.service.ProductsService;
+import jock.demo.service.ValidationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,10 +36,13 @@ public class ProductsServiceImpl implements ProductsService {
      */
     private void checkAddProducts(Products products) {
         if (products == null) {
-            throw new BusinessException("Product is empty!");
+            throw new ValidationException("Product is empty!");
         }
         if (products.getName() == null || "".equals(products.getName().trim())) {
-            throw new BusinessException("Product name is empty!");
+            throw new ValidationException("Product name is empty!");
+        }
+        if (productsMapper.selectByPrimaryName(products.getName()) != null) {
+            throw new BusinessException("Product name already exists!");
         }
     }
 
@@ -69,6 +73,7 @@ public class ProductsServiceImpl implements ProductsService {
         Date now = new Date();
         products.setCreateDate(now);
         products.setUpdateDate(now);
+        products.setIsDelete(false);
         productsMapper.insert(products);
         return products;
     }
@@ -76,8 +81,8 @@ public class ProductsServiceImpl implements ProductsService {
     @Override
     @Transactional
     public void removeCurrentProducts(Integer productId) {
-        if (productId == null|| productId<=0) {
-            throw new BusinessException("Product id cannot be empty and should be greater than 0!");
+        if (productId == null || productId <= 0) {
+            throw new ValidationException("Product id cannot be empty and should be greater than 0!");
         }
         Products products = productsMapper.selectByPrimaryKey(productId);
         if (products == null || !products.getIsRelease()) {
@@ -91,8 +96,8 @@ public class ProductsServiceImpl implements ProductsService {
     @Override
     @Transactional
     public void removeComingSoonProducts(Integer productId) {
-        if (productId == null|| productId<=0) {
-            throw new BusinessException("Product id cannot be empty and should be greater than 0!");
+        if (productId == null || productId <= 0) {
+            throw new ValidationException("Product id cannot be empty and should be greater than 0!");
         }
         Products products = productsMapper.selectByPrimaryKey(productId);
         if (products == null || products.getIsRelease()) {

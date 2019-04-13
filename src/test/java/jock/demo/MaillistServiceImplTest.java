@@ -23,7 +23,7 @@ public class MaillistServiceImplTest {
 
 
     @Test
-    public void mailOpTest(){
+    public void mailOpTest() {
         String email = "test@abc.com";
         maillistService.deleteMailAddress(email);
 

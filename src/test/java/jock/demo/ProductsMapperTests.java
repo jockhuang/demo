@@ -19,7 +19,7 @@ public class ProductsMapperTests {
     private ProductsMapper productsMapper;
 
     @Test
-    public void crudTest(){
+    public void crudTest() {
         Products p1 = new Products();
         p1.setName("test1");
         p1.setDescription("just a test");
@@ -28,14 +28,14 @@ public class ProductsMapperTests {
         p1.setIsRelease(false);
         p1.setIsDelete(false);
 
-        Assert.assertEquals(productsMapper.insert(p1),1);
+        Assert.assertEquals(productsMapper.insert(p1), 1);
 
         Products p2 = productsMapper.selectByPrimaryName("test1");
 
         Assert.assertNotNull(p2);
         System.out.println(p2.getId());
 
-        Assert.assertEquals(productsMapper.deleteByPrimaryKey(p2.getId()),1);
+        Assert.assertEquals(productsMapper.deleteByPrimaryKey(p2.getId()), 1);
 
     }
 

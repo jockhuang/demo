@@ -2,6 +2,7 @@ package jock.demo.controller;
 
 import jock.demo.model.Maillist;
 import jock.demo.service.MaillistService;
+import jock.demo.service.ValidationException;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,7 +39,7 @@ public class MaillistController {
     @RequestMapping(value = "", method = POST, produces = "application/json")
     public MyReponseBody addPerson(@RequestBody Maillist person) {
         if (person.getEmail() == null || "".equals(person.getEmail().trim())) {
-            return MyReponseBody.failed("Email address cannot be empty!");
+            throw new ValidationException("Email address cannot be empty!");
         }
         person.setId(null);
         person.setCreateDate(new Date());
@@ -61,7 +62,7 @@ public class MaillistController {
     @RequestMapping(value = "/{email}", method = DELETE)
     public MyReponseBody removePerson(@PathVariable String email) {
         if (email == null || "".equals(email.trim())) {
-            return MyReponseBody.failed("Email address cannot be empty!");
+            throw new ValidationException("Email address cannot be empty!");
         }
         maillistService.deleteMailAddress(email);
         return MyReponseBody.ok();
