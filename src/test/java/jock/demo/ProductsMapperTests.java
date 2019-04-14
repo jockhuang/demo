@@ -28,12 +28,17 @@ public class ProductsMapperTests {
         p1.setIsRelease(false);
         p1.setIsDelete(false);
 
+        //clear
+        Products products = productsMapper.selectByPrimaryName(p1.getName());
+        if(products!=null&& products.getId()!=null)
+            productsMapper.deleteByPrimaryKey(products.getId());
+
         Assert.assertEquals(productsMapper.insert(p1), 1);
 
         Products p2 = productsMapper.selectByPrimaryName("test1");
 
         Assert.assertNotNull(p2);
-        System.out.println(p2.getId());
+//        System.out.println(p2.getId());
 
         Assert.assertEquals(productsMapper.deleteByPrimaryKey(p2.getId()), 1);
 
