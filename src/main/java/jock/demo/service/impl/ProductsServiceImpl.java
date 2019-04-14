@@ -90,7 +90,7 @@ public class ProductsServiceImpl implements ProductsService {
             throw new ValidationException("Product id cannot be empty and should be greater than 0!");
         }
         Products products = productsMapper.selectByPrimaryKey(productId);
-        if (products == null || !products.getIsRelease()) {
+        if (products == null || products.getIsDelete() || !products.getIsRelease()) {
             throw new BusinessException("Product does not exist or is not released!");
         }
         products.setIsDelete(true);
@@ -107,7 +107,7 @@ public class ProductsServiceImpl implements ProductsService {
             throw new ValidationException("Product id cannot be empty and should be greater than 0!");
         }
         Products products = productsMapper.selectByPrimaryKey(productId);
-        if (products == null || products.getIsRelease()) {
+        if (products == null || products.getIsDelete() || products.getIsRelease()) {
             throw new BusinessException("Product does not exist or is released!");
         }
         products.setIsDelete(true);

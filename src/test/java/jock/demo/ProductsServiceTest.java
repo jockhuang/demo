@@ -129,6 +129,26 @@ public class ProductsServiceTest {
         productsService.addCurrentProducts(p1);
         productsService.addCurrentProducts(p1);
 
+        //clear
+        Products p2 = productsMapper.selectByPrimaryName("test2");
+        productsService.removeCurrentProducts(p2.getId());
+    }
+
+    /**
+     * the same data remove twice will occur exception
+     */
+    @Test(expected = BusinessException.class)
+    public void currentRemoveTwiceTest() {
+        Products p1 = new Products();
+        p1.setName("test2");
+        p1.setDescription("just a test");
+        p1 = productsService.addCurrentProducts(p1);
+
+        productsService.removeCurrentProducts(p1.getId());
+
+        productsService.removeCurrentProducts(p1.getId());
+
+
     }
 
     @Test(expected = ValidationException.class)
@@ -158,6 +178,27 @@ public class ProductsServiceTest {
         p1.setDescription("just a test");
         productsService.addComingSoonProducts(p1);
         productsService.addComingSoonProducts(p1);
+
+        //clear
+        Products p2 = productsMapper.selectByPrimaryName("test1");
+        productsService.removeCurrentProducts(p2.getId());
+
+    }
+
+    /**
+     * the same data remove twice will occur exception
+     */
+    @Test(expected = BusinessException.class)
+    public void soonRemoveTwiceTest() {
+        Products p1 = new Products();
+        p1.setName("test1");
+        p1.setDescription("just a test");
+        p1 = productsService.addComingSoonProducts(p1);
+
+        productsService.removeComingSoonProducts(p1.getId());
+
+        productsService.removeComingSoonProducts(p1.getId());
+
 
     }
 
