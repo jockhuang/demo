@@ -41,9 +41,14 @@ public class ProductsServiceImpl implements ProductsService {
         if (products.getName() == null || "".equals(products.getName().trim())) {
             throw new ValidationException("Product name is empty!");
         }
-        if (productsMapper.selectByPrimaryName(products.getName()) != null) {
+
+        Products p = productsMapper.selectByPrimaryName(products.getName());
+        if (p != null && !p.getIsDelete()) {
             throw new BusinessException("Product name already exists!");
+        }else if(p!=null && p.getIsDelete()){
+            productsMapper.deleteByPrimaryKey(p.getId());
         }
+
     }
 
 
@@ -88,7 +93,9 @@ public class ProductsServiceImpl implements ProductsService {
         if (products == null || !products.getIsRelease()) {
             throw new BusinessException("Product does not exist or is not released!");
         }
-        productsMapper.deleteByPrimaryKey(productId);
+        products.setIsDelete(true);
+        products.setUpdateDate(new Date());
+        productsMapper.updateByPrimaryKey(products);
 
 
     }
@@ -103,6 +110,8 @@ public class ProductsServiceImpl implements ProductsService {
         if (products == null || products.getIsRelease()) {
             throw new BusinessException("Product does not exist or is released!");
         }
-        productsMapper.deleteByPrimaryKey(productId);
+        products.setIsDelete(true);
+        products.setUpdateDate(new Date());
+        productsMapper.updateByPrimaryKey(products);
     }
 }

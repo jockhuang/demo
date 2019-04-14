@@ -32,30 +32,36 @@ public class ProductsServiceTest {
         Products p1 = new Products();
         p1.setName("test1");
         p1.setDescription("just a test");
-        p1.setCreateDate(new Date());
-        p1.setUpdateDate(new Date());
-        p1.setIsRelease(false);
-        p1.setIsDelete(false);
 
+        //clear
+        Products p2 = productsMapper.selectByPrimaryName("test1");
+        productsService.removeComingSoonProducts(p2.getId());
+
+        //record origin of list size
         List<Products> list = productsService.getComingSoonProduct();
         Integer originSize = list.size();
 
+        //insert a new product and if add success the products should have id.
         Products products = productsService.addComingSoonProducts(p1);
         Assert.assertNotEquals(products.getId().longValue(), 0L);
 
-
+        //find the new list size
         List<Products> list1 = productsService.getComingSoonProduct();
-
         Integer newSize = list1.size();
+        // it should be greater than origin size
         Assert.assertNotEquals(originSize, newSize);
 
-        Products p2 = productsMapper.selectByPrimaryName("test1");
-
+        //find by product name
+        p2 = productsMapper.selectByPrimaryName("test1");
+        //it should be not null
         Assert.assertNotNull(p2);
-        System.out.println(p2.getId());
+        Assert.assertEquals(p2.getName(),"test1");
 
-        Assert.assertEquals(productsMapper.deleteByPrimaryKey(p2.getId()), 1);
+        //remove the product
+        productsService.removeComingSoonProducts(p2.getId());
 
+
+        //the list size should be equals to the origin size
         list1 = productsService.getComingSoonProduct();
         newSize = list1.size();
         Assert.assertEquals(originSize, newSize);
@@ -69,28 +75,38 @@ public class ProductsServiceTest {
         Products p1 = new Products();
         p1.setName("test2");
         p1.setDescription("just a test");
-        p1.setCreateDate(new Date());
-        p1.setUpdateDate(new Date());
-        p1.setIsRelease(true);
-        p1.setIsDelete(false);
+        //clear
+        Products p2 = productsMapper.selectByPrimaryName("test2");
+        productsService.removeCurrentProducts(p2.getId());
 
+
+        //record origin of list size
         List<Products> list = productsService.getAllCurrentProducts();
         Integer originSize = list.size();
 
+        //insert a new product and if add success the products should have id.
         Products products = productsService.addCurrentProducts(p1);
         Assert.assertNotEquals(products.getId().longValue(), 0L);
 
+
+        //find the new list size
         List<Products> list1 = productsService.getAllCurrentProducts();
         Integer newSize = list1.size();
+
+        // it should be greater than origin size
         Assert.assertNotEquals(originSize, newSize);
         Assert.assertNotNull(list1);
 
-        Products p2 = productsMapper.selectByPrimaryName("test2");
-
+        //find by product name
+        p2 = productsMapper.selectByPrimaryName("test2");
+        //it should be not null
         Assert.assertNotNull(p2);
+        Assert.assertEquals(p2.getName(),"test2");
 
-        Assert.assertEquals(productsMapper.deleteByPrimaryKey(p2.getId()), 1);
+        //remove the product
+        productsService.removeCurrentProducts(p2.getId());
 
+        //the list size should be equals to the origin size
         list1 = productsService.getAllCurrentProducts();
         newSize = list1.size();
         Assert.assertEquals(originSize, newSize);
@@ -100,6 +116,19 @@ public class ProductsServiceTest {
     @Test(expected = ValidationException.class)
     public void currentAddNullTest() {
         productsService.addCurrentProducts(null);
+    }
+
+    /**
+     * the same data add twice will occur exception
+     */
+    @Test(expected = BusinessException.class)
+    public void currentAddTwiceTest() {
+        Products p1 = new Products();
+        p1.setName("test2");
+        p1.setDescription("just a test");
+        productsService.addCurrentProducts(p1);
+        productsService.addCurrentProducts(p1);
+
     }
 
     @Test(expected = ValidationException.class)
@@ -117,6 +146,19 @@ public class ProductsServiceTest {
     public void soonAddEmptyTest() {
         Products products = new Products();
         productsService.addComingSoonProducts(products);
+    }
+
+    /**
+     * the same data add twice will occur exception
+     */
+    @Test(expected = BusinessException.class)
+    public void soonAddTwiceTest() {
+        Products p1 = new Products();
+        p1.setName("test1");
+        p1.setDescription("just a test");
+        productsService.addComingSoonProducts(p1);
+        productsService.addComingSoonProducts(p1);
+
     }
 
     @Test(expected = ValidationException.class)
