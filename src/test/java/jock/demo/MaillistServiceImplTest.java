@@ -4,15 +4,13 @@ import jock.demo.dao.MaillistMapper;
 import jock.demo.service.BusinessException;
 import jock.demo.service.MaillistService;
 import jock.demo.service.ValidationException;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.annotation.Resource;
 
-@RunWith(SpringRunner.class)
 @SpringBootTest
 public class MaillistServiceImplTest {
 
@@ -30,31 +28,30 @@ public class MaillistServiceImplTest {
 
 
         maillistService.addMailAddress(email);
-        Assert.assertNotNull(maillistMapper.selectByMail(email));
+        Assertions.assertNotNull(maillistMapper.selectByMail(email));
 
         maillistService.deleteMailAddress(email);
-        Assert.assertNull(maillistMapper.selectByMail(email));
+        Assertions.assertNull(maillistMapper.selectByMail(email));
 
     }
 
     /**
      * cannot have two identical records
      */
-    @Test(expected = BusinessException.class)
+    @Test
     public void duplicateMail() {
         String email = "test@abc.com";
-
         maillistService.addMailAddress(email);
-        maillistService.addMailAddress(email);
+        Assertions.assertThrows(BusinessException.class,()->maillistService.addMailAddress(email));
     }
 
-    @Test(expected = ValidationException.class)
+    @Test
     public void addNullMail() {
-        maillistService.addMailAddress(null);
+        Assertions.assertThrows(ValidationException.class,()->maillistService.addMailAddress(null));
     }
 
-    @Test(expected = ValidationException.class)
+    @Test
     public void addEmptyMail() {
-        maillistService.addMailAddress(" ");
+        Assertions.assertThrows(ValidationException.class,()->maillistService.addMailAddress(" "));
     }
 }

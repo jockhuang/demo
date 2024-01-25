@@ -2,16 +2,15 @@ package jock.demo;
 
 import jock.demo.dao.ProductsMapper;
 import jock.demo.model.Products;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.annotation.Resource;
 import java.util.Date;
 
-@RunWith(SpringRunner.class)
 @SpringBootTest
 public class ProductsMapperTests {
 
@@ -33,14 +32,14 @@ public class ProductsMapperTests {
         if(products!=null&& products.getId()!=null)
             productsMapper.deleteByPrimaryKey(products.getId());
 
-        Assert.assertEquals(productsMapper.insert(p1), 1);
+        Assertions.assertEquals(productsMapper.insert(p1), 1);
 
         Products p2 = productsMapper.selectByPrimaryName("test1");
 
-        Assert.assertNotNull(p2);
+        Assertions.assertNotNull(p2);
 //        System.out.println(p2.getId());
 
-        Assert.assertEquals(productsMapper.deleteByPrimaryKey(p2.getId()), 1);
+        Assertions.assertEquals(productsMapper.deleteByPrimaryKey(p2.getId()), 1);
 
     }
 
